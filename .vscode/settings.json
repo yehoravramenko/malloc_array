@@ -1,0 +1,9 @@
+{
+    "editor.tabSize": 2,
+    "clangd.arguments": [
+        "--enable-config"
+    ],
+    // "clangd.fallbackFlags": [
+    //     "-Iinclude",
+    // ]
+}
