@@ -1,5 +1,6 @@
-#ifdef MALLOC_ARRAY_EXPORTS
-#define MALLOC_ARRAY_API __declspec(dllexport)
-#else
-#define MALLOC_ARRAY_API __declspec(dllimport)
-#endif
+#include "../lib/malloc_array.h"
+
+int main() {
+  MallocArray array = MallocArray_Init();
+  return 0;
+}
