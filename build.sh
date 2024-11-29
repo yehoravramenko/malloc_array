@@ -4,38 +4,33 @@
 OUTPUT_DIR="bin"        # Directory to store the output binary
 SOURCE_DIR="src"        # Directory containing C source files
 
-
 EXECUTABLE_NAME="malloc_array_test"   # Name of the final executable
 EXT=".exe"
 
 # Compiler settings
 CC=gcc                  # Compiler
 CFLAGS="-Wall -Wextra -g"  # Compiler flags
-# CFLAGS="-Wall -Wextra -Iinclude"  # Compiler flags
 LDFLAGS="-L./bin"              # Linker flags
 
 
-if [ $# -ne 0 ]; then
-    if [ "$1" = "lib" ]; then
-        SOURCE_DIR="lib"        # Directory containing C source files
-        # OUTPUT_DIR="lib"
-        DLL_NAME="malloc_array"
-        DLL_EXT=".dll"
-        SOURCES=$(find $SOURCE_DIR -name "*.c")
-
-        mkdir -p $OUTPUT_DIR
-
-        echo "Compiling..."
-        # $CC $CFLAGS $SOURCES -shared -o $OUTPUT_DIR/$DLL_NAME$DLL_EXT -D MALLOC_ARRAY_EXPORTS
+if [ "$1" = "lib" ]; then
+    SOURCE_DIR="lib"        # Directory containing C source files
+    DLL_NAME="malloc_array"
+    DLL_EXT=".dll"
+    SOURCES=$(find $SOURCE_DIR -name "*.c")
+    mkdir -p $OUTPUT_DIR
+    echo "Compiling..."
+    if [ "$2" = "debug" ]; then
+        $CC $CFLAGS $SOURCES -shared -Os -s -o $OUTPUT_DIR/$DLL_NAME$DLL_EXT -D DEBUG
+    else
         $CC $CFLAGS $SOURCES -shared -Os -s -o $OUTPUT_DIR/$DLL_NAME$DLL_EXT
-
-        if [ $? -ne 0 ]; then
-            echo "Build failed!"
-            exit 1  
-        fi
-
-        exit 0
     fi
+    if [ $? -ne 0 ]; then
+        echo "Build failed!"
+        exit 1  
+    fi
+    echo "Build successful!"
+    exit 0
 fi
 
 # Ensure output directory exists

@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: - "-ID:\\yehoravramenko\\metrobud\\include"
+  Add: - "-ID:\\yehoravramenko\\metrobud\\include -std=c99 -Wall"

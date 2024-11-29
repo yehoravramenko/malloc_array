@@ -18,3 +18,4 @@ typedef _MallocArray *MallocArray;
 MALLOC_ARRAY_API void CALL ArrayPool_Push(MallocArray array);
 
 MALLOC_ARRAY_API MallocArray CALL MallocArray_Init();
+MALLOC_ARRAY_API void CALL MallocArray_Clean();

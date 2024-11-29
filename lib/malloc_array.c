@@ -2,9 +2,17 @@
 #include "malloc_array.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <inttypes.h>
 
 MallocArray *array_pool = (void *)0;
 int array_pool_count = 0;
+
+#ifdef DEBUG
+#define DBG_MSG(...) printf(__VA_ARGS__)
+#else
+#define DBG_MSG(...)
+#endif
 
 void CALL ArrayPool_Push(MallocArray array) {
   void *temp = realloc(array_pool, (++array_pool_count) * sizeof(MallocArray));
@@ -13,7 +21,19 @@ void CALL ArrayPool_Push(MallocArray array) {
   }
   array_pool = (MallocArray *)temp;
   array_pool[array_pool_count - 1] = array;
-  printf("address is %p\n", array_pool[array_pool_count - 1]);
+  // DBG_MSG("address is 0x%08" PRIxPTR "\n",
+  //         (uintptr_t)(array_pool[array_pool_count - 1]));
+}
+
+void CALL MallocArray_Clean() {
+  for (int i = 0; i < array_pool_count; i++) {
+    free(array_pool[i]->address);
+    DBG_MSG("[%d] Malloc array at 0x%08" PRIxPTR " was cleaned\n", i,
+            (uintptr_t)(array_pool[i]->address));
+    free(array_pool[i]);
+    DBG_MSG("[%d] Malloc array struct at 0x%08" PRIxPTR " was cleaned\n", i,
+            (uintptr_t)(array_pool[i]));
+  }
 }
 
 MallocArray CALL MallocArray_Init() {
